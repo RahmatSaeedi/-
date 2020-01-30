@@ -1,0 +1,61 @@
+﻿<Page
+    x:Class="بانک_اطلاعاتی.Pages.ServerSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:بانک_اطلاعاتی.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+
+    </Page.Resources>
+    <StackPanel FlowDirection="RightToLeft" Padding="20,0,0,0">
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="میزبان کامپیوتر" Style="{StaticResource TextBlocksStyle}" />
+            <TextBox PlaceholderText="localhost" Style="{StaticResource TextBoxesStyle}" Grid.Column="1" Name="hostTextBox" GotFocus="textBox_GotFocus" />
+        </Grid>
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="بانک اطلاعات" Style="{StaticResource TextBlocksStyle}" />
+            <TextBox PlaceholderText="postgres" Style="{StaticResource TextBoxesStyle}" Grid.Column="1" Name="databaseTextBox" GotFocus="textBox_GotFocus" />
+        </Grid>
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="نام کاربری" Style="{StaticResource TextBlocksStyle}" />
+            <TextBox PlaceholderText="postgres" Style="{StaticResource TextBoxesStyle}" Grid.Column="1" Name="usernameTextBox" GotFocus="textBox_GotFocus" />
+        </Grid>
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="رمز عبور" Style="{StaticResource TextBlocksStyle}" />
+            <PasswordBox BorderBrush="ForestGreen" BorderThickness="1" CornerRadius="0,10,10,0"  Grid.Column="1" Name="passwordBox" HorizontalContentAlignment="Left" GotFocus="passwordBox_GotFocus"  />
+        </Grid>
+        <Grid HorizontalAlignment="Left" Margin="150,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"  />
+                <ColumnDefinition Width="Auto"  />
+                <ColumnDefinition Width="Auto"  />
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource NavigationButtons}" Content="ذخیره کنید" Name="saveButton" Click="saveButton_Click" />
+            <Button Style="{StaticResource NavigationButtons}" Grid.Column="1" Content="وصل کنید" Name="connectButton" Click="connectButton_Click"/>
+        </Grid>
+        <TextBlock Name="resultsTextBox" Style="{StaticResource TextBlocksStyle}" Foreground="Green" Margin="0,20,0,0" HorizontalAlignment="Center" />
+    </StackPanel>
+</Page>

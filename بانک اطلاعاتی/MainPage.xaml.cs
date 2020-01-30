@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Npgsql;
+using بانک_اطلاعاتی.Models;
+using بانک_اطلاعاتی.Pages;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,9 +25,17 @@ namespace بانک_اطلاعاتی
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
         public MainPage()
         {
             this.InitializeComponent();
+            connectionState.Text = "قطع شده";
+            connectionState.Foreground = new SolidColorBrush(Windows.UI.Colors.Red);
+        }
+
+        private void ServerSettings_Click(object sender, RoutedEventArgs e)
+        {
+            mainPageFrame.Navigate(typeof(ServerSettingsPage));
         }
     }
 }
