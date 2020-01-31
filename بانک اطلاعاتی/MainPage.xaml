@@ -1,4 +1,5 @@
 ﻿<Page
+    x:Name="myMainPage"
     x:Class="بانک_اطلاعاتی.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -46,10 +47,10 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" >
                 <Button Style="{StaticResource NavigationButtons}" Content="تنظیمات سرور" Name="ServerSettings" Click="ServerSettings_Click" />
-                <Button Style="{StaticResource NavigationButtons}" Content="بانکهای اطلاعاتی" Name="Databases" />
+                <Button Style="{StaticResource NavigationButtons}" Content="بانکهای اطلاعاتی" Name="Databases" Click="Databases_Click" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <TextBlock Name="connectionState" />
+                <TextBlock Name="connectionState" Margin="0,10,20,0" Text="{Binding ElementName=myMainPage, Path=SQL.connectionState}" Foreground="{Binding ElementName=myMainPage, Path=SQL.messageColor}"/>
             </StackPanel>
             <Frame Grid.Row="1" Grid.ColumnSpan="2" Name="mainPageFrame"/>
         </Grid>

@@ -23,6 +23,11 @@ namespace بانک_اطلاعاتی.Pages
     /// </summary>
     public sealed partial class ServerSettingsPage : Page
     {
+        public psql SQL
+        {
+            get { return (psql)App.SQL; }
+        }
+
         public ServerSettingsPage()
         {
             this.InitializeComponent();
@@ -59,13 +64,8 @@ namespace بانک_اطلاعاتی.Pages
                 return;
             } else
             {
-                App.SQL = new psql(hostTextBox.Text, databaseTextBox.Text, usernameTextBox.Text, passwordBox.Password);
-                psqlMessages.types result = App.SQL.Connect();
-                resultsTextBox.Text = psqlMessages.messages(result);
-                resultsTextBox.Foreground = new SolidColorBrush(psqlMessages.messageColour(result));
-
-                //var parent = VisualTreeHelper.GetParent(this);
-                
+                App.SQL.UpdateConnectionString(hostTextBox.Text, databaseTextBox.Text, usernameTextBox.Text, passwordBox.Password);
+                App.SQL.Connect();
             }
         }
 

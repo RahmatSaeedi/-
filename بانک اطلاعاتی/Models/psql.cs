@@ -3,122 +3,111 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql;
 using System.Threading;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
+using Npgsql;
+
 
 
 namespace بانک_اطلاعاتی.Models
 {
-    public class psqlMessages
+    public class psql : DependencyObject
     {
-        public enum types {
-            ConnectionSucceeded,
-            ConnectionFailed
-        }
-        public static string messages(types msg)
+        public string message
         {
-            switch (msg)
+            get { return (String)GetValue(messageProperty); }
+            set { SetValue(messageProperty, value); }
+        }
+        public SolidColorBrush messageColor {
+            get { return (SolidColorBrush) GetValue(messageColorProperty); }
+            set { SetValue(messageColorProperty, value); }
+        }
+        public string connectionState {
+            set { SetValue(connectionStateProperty, value); }
+            get { return (string)GetValue(connectionStateProperty); }
+        }
+        public SolidColorBrush connectionStateColor
+        {
+            set { SetValue(connectionStateColorProperty, value); }
+            get { return (SolidColorBrush)GetValue(connectionStateColorProperty); }
+        }
+        public static readonly DependencyProperty messageProperty = DependencyProperty.Register("message", typeof(string), typeof(psql), null);
+        public static readonly DependencyProperty messageColorProperty = DependencyProperty.Register("messageColor", typeof(SolidColorBrush), typeof(psql), null);
+        public static readonly DependencyProperty connectionStateProperty = DependencyProperty.Register("connectionState", typeof(string), typeof(psql), null);
+        public static readonly DependencyProperty connectionStateColorProperty = DependencyProperty.Register("connectionStateColor", typeof(SolidColorBrush), typeof(psql), null);
+
+        private NpgsqlConnection connection;
+        private string Host { get; set; }
+        private string Database { get; set; }
+        private string Password { set; get; }
+        private string Username { set; get; }
+        private string connectionString
+        {
+            get
             {
-                case types.ConnectionSucceeded:
-                    return "اتصال موفقیت آمیز بود.";
-
-                case types.ConnectionFailed:
-                    return "اتصال ناموفق بود.";
-
-                default:
-                    return "شماره پیام ناشناخته است.";
+                if (String.IsNullOrEmpty(Host) || String.IsNullOrEmpty(Database) || String.IsNullOrEmpty(Username) || String.IsNullOrEmpty(Password))
+                    return null;
+                else
+                    return "Host=" + this.Host + ";Username=" + this.Username + ";Password=" + this.Password + ";Database=" + this.Database;
             }
         }
-        public static Windows.UI.Color messageColour(types err)
-        {
-            switch (err)
-            {
-                case types.ConnectionSucceeded:
-                    return Windows.UI.Colors.ForestGreen;
 
-                case types.ConnectionFailed:
-                    return Windows.UI.Colors.Red;
-
-                default:
-                    return Windows.UI.Colors.Yellow;
-            }
-        }
-
-    }
-
-
-    public class psql
-    {
         public psql(string Host, string Database, string Username, string Password)
         {
             this.Host = Host;
             this.Username = Username;
             this.Database = Database;
-            this._Password = Password;
+            this.Password = Password;
+            this.connectionState = "قطع شده";
+            this.connectionStateColor = new SolidColorBrush(Colors.Red);
         }
+        public psql(){
+            this.connectionState = "قطع شده";
+            this.connectionStateColor = new SolidColorBrush(Colors.Red);
+        }
+        public void UpdateConnectionString(string Host, string Database, string Username, string Password)
+        {
+            this.Host = Host;
+            this.Username = Username;
+            this.Database = Database;
+            this.Password = Password;
+        }
+
         ~psql()
         {
-            connection.Close();
-        }
-        public string state = "قطع شده";
-        public Windows.UI.Color stateColour = Windows.UI.Colors.Red;
-
-
-        private string _Username;
-        private string _Password;
-        private string connectionString { 
-            get
+            try
             {
-                if (String.IsNullOrEmpty(Host) || String.IsNullOrEmpty(Database) || String.IsNullOrEmpty(_Username) || String.IsNullOrEmpty(_Password))
-                    return null;
-                else 
-                    return "Host=" + this.Host + ";Username=" + this._Username + ";Password=" + this._Password + ";Database=" + this.Database;
-            }
+                connection.Close();
+                this.connectionState = "قطع شده";
+                this.connectionStateColor = new SolidColorBrush(Colors.Red);
+            } catch { }
         }
-        private NpgsqlConnection connection;
-
-
-        private string Host { get; set; }
-        private string Database { get; set; }
-        private string Password
-        {
-            set
-            {
-                if(!String.IsNullOrEmpty(value))
-                {
-                    this._Password = value;
-                }
-            }
-        }
-        private string Username
-        {
-            set
-            {
-                if(!String.IsNullOrEmpty(value))
-                {
-                    this._Username = value;
-                }
-            }
-        }
-
-
-        public psqlMessages.types Connect()
+        public void Connect()
         {
             this.connection = new NpgsqlConnection(connectionString);
+            
             try
             {
                 connection.Open();
-                this.state = "متصل شده";
-                this.stateColour = Windows.UI.Colors.ForestGreen;
-                return psqlMessages.types.ConnectionSucceeded;
-            } catch
-            {
-                this.state = "قطع شده";
-                this.stateColour = Windows.UI.Colors.Red;
-                return psqlMessages.types.ConnectionFailed;
-
+                SetDependencyStates("اتصال موفقیت آمیز بود.", Colors.ForestGreen, "متصل شده", Colors.ForestGreen);
+            } catch {
+                SetDependencyStates("اتصال ناموفق بود.", Colors.Red, "قطع شده", Colors.Red);
             }
         }
 
+        private void SetDependencyStates(string message, Color messageColor, string connectionState, Color connectionStateColor)
+        {
+            this.message = message;
+            this.messageColor = new SolidColorBrush(messageColor);
+            this.connectionState = connectionState;
+            this.connectionStateColor = new SolidColorBrush(connectionStateColor);
+        }
+        private void SetDependencyStates(string message, Color messageColor)
+        {
+            this.message = message;
+            this.messageColor = new SolidColorBrush(messageColor);
+        }
     }
 }

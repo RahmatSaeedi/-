@@ -25,17 +25,23 @@ namespace بانک_اطلاعاتی
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
+        public psql SQL
+        {
+            get { return App.SQL; }
+        }
         public MainPage()
         {
             this.InitializeComponent();
-            connectionState.Text = "قطع شده";
-            connectionState.Foreground = new SolidColorBrush(Windows.UI.Colors.Red);
         }
 
         private void ServerSettings_Click(object sender, RoutedEventArgs e)
         {
             mainPageFrame.Navigate(typeof(ServerSettingsPage));
+        }
+
+        private void Databases_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

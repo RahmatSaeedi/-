@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,8 +24,7 @@ namespace بانک_اطلاعاتی
     /// </summary>
     sealed partial class App : Application
     {
-        public static psql SQL;
-
+        public static psql SQL = new psql();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
